@@ -8,44 +8,21 @@
   <style>
     body { font-family: sans-serif; text-align: center; padding: 50px 20px; background-color: #f8f9fa; }
     .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; margin: 0 auto; }
-    #status { color: #666; margin: 20px 0; }
+    #status { color: #666; margin: 20px 0; font-size: 16px; }
     .btn { background: #06C755; color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; font-weight: bold; cursor: pointer; display: none; margin: 0 auto; }
   </style>
 </head>
 <body>
   <div class="card">
     <h2>報到身分確認</h2>
-    <p id="status">正在與 LINE 連線...</p>
+    <p id="status">系統檢查中...</p>
     <button id="reportBtn" class="btn" onclick="sendReport()">📍 確認報到</button>
   </div>
 
   <script>
+    // 請確認這裡填的是你的 LIFF ID
     const LIFF_ID = '2008928015-XdtPiTOR';
 
     window.onload = function() {
+      // 初始化 LIFF
       liff.init({ liffId: LIFF_ID })
-        .then(() => {
-          if (!liff.isLoggedIn()) {
-            liff.login(); // GitHub Pages 環境下，這裡會順利跳轉，不會變白畫面
-          } else {
-            document.getElementById('status').innerText = "驗證成功，請點擊按鈕完成報到";
-            document.getElementById('reportBtn').style.display = "block";
-          }
-        })
-        .catch(err => {
-          document.getElementById('status').innerText = "初始化失敗: " + err.message;
-        });
-    };
-
-    function sendReport() {
-      liff.sendMessages([{ type: 'text', text: '📍 我要報到' }])
-        .then(() => {
-          liff.closeWindow();
-        })
-        .catch(err => {
-          alert("報到失敗: " + err.message);
-        });
-    }
-  </script>
-</body>
-</html>
